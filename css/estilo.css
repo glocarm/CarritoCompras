@@ -1,0 +1,19 @@
+.imgProductos {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-top: 1rem;
+}
+.card{
+    display: flex;
+    align-items: center;
+    margin: 0.5rem;
+}
+.colorBoton{
+    color:white;
+    background-color: black;
+}
+.colorBoton:hover{
+    background-color: aquamarine;
+    color: black;
+}
