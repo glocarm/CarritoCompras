@@ -1,3 +1,4 @@
+// Creación de Data Local para implementar el Carrito modificando el DOM
 class Producto {
   constructor(id, nombre, precio, disponible, imagen) {
     this.id = id;
@@ -42,7 +43,7 @@ const mostrarProductos = () => {
     const boton = document.getElementById(`boton${producto.id}`);
     boton.addEventListener("click", () => {
       agregarCarrito(producto.id);
-      mostrarProductos();
+      
     });
   });
 };
@@ -70,6 +71,8 @@ const agregarCarrito = (id) => {
     }
   }
   calcularTotalCompra();
+  mostrarProductos();
+  mostrarCarrito();
 };
 
 //mostrar los Productos del Carrito con click en boton ver Carrito
@@ -96,13 +99,13 @@ const mostrarCarrito = () => {
               </div> `;
     contenedorCarrito.appendChild(card);
 
-    //funcion para eliminar un producto del carrito
+    //funcion para eliminar un producto del carrito en el boton -
     const boton = document.getElementById(`eliminar${producto.id}`);
     boton.addEventListener("click", () => {
       eliminardelCarrito(producto.id);
     });
 
-    //funcion para aumentar cantidad de un producto que ya esta en el carrito
+    //funcion para aumentar cantidad de un producto que ya esta en el carrito con el boton +
     const aumentarprodcarrito = document.getElementById(
       `agregar${producto.id}`
     );
@@ -115,9 +118,7 @@ const mostrarCarrito = () => {
 
 //Función eliminar unidades del producto que estan en el Carrito y actualiza disponible en almacen
 const sacardelCarrito = (id) => {
-  const productoCatalogo = arrayproductos.find(
-    (producto) => producto.id === id
-  );
+  const productoCatalogo = arrayproductos.find((producto) => producto.id === id);
   productoCatalogo.disponible += 1;
   const productoenCarrito = arraycarrito.find((producto) => producto.id === id);
   if (productoenCarrito.cantidad > 1) {
@@ -128,6 +129,7 @@ const sacardelCarrito = (id) => {
     }
   }
   calcularTotalCompra();
+  mostrarProductos();
 };
 
 //funcion que elimina el producto de la lista del carrito y lo recalcula
@@ -155,17 +157,21 @@ vaciarCarrito.addEventListener("click", () => {
 //Función que vacia el Carrito y actualiza disponible en Catalogo de Productos
 const eliminartodoelcarrito = () => {
   let i=0;
-  while (i<=arraycarrito.length-1){
-    let j=0;  let encontrado=false;
-    while((j<=arrayproductos.length-1)&&(encontrado===false))
+  for (i = 0; i <= arraycarrito.length-1; i++) {
+    const element = arraycarrito[i];
+    console.log(arraycarrito[i]);
+    let j=0; 
+    let encontrado=false;
+    while((j<=arrayproductos.length)&&(encontrado===false))
     { 
-      if(arraycarrito[i].id===arrayproductos[j].id){
+      if(arraycarrito[i].id===arrayproductos[j].id)
+      {
         encontrado=true;
         arrayproductos[j].disponible += arraycarrito[i].cantidad;
+        arraycarrito[i].cantidad = 1;
       }
       j++;
     }
-    i++;
   }
   arraycarrito = [];
   mostrarProductos();
